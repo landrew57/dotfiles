@@ -169,3 +169,27 @@ function o() {
 function tre() {
 	tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
 }
+
+function addToPromptCommand {
+  PROMPT_COMMAND="${PROMPT_COMMAND:-""}"
+  if [[ ":$PROMPT_COMMAND:" != *":$1:"* ]]; then
+    PROMPT_COMMAND="${PROMPT_COMMAND} $1;"
+  fi
+}
+# write to history after every command rather than at exit
+addToPromptCommand 'history -a'
+# check if the command is already in PROMPT_COMMAND, useful if sourcing bashrc multiple times
+export addToPromptCommand
+function backup_bash_history {
+  local BASH_HISTORY=~/.bash_history
+  local BACKUP_DIR=~/.bash_history_backups
+  local BACKUP_FILE="${BACKUP_DIR}/$(date +%Y-%m-%d).bash_history"
+  mkdir -p ${BACKUP_DIR}
+  if [ ! -f "${BACKUP_FILE}" ]; then
+    cp $HOME/.bash_history ${BACKUP_FILE}
+    # make the backup read-only
+    chmod 0400 ${BACKUP_FILE}
+  fi
+}
+export backup_bash_history
+addToPromptCommand backup_bash_history

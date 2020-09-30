@@ -48,3 +48,8 @@ complete -W "NSGlobalDomain" defaults;
 
 # Add `killall` tab completion for common apps
 complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes SystemUIServer Terminal Twitter" killall;
+PYENV_ROOT=/Users/LAN34/Applications/python/pyenv
+
+# e.g. grep<up><up> will search through previous grep commands
+bind '"\e[A":history-search-backward'
+bind '"\e[B":history-search-forward'
